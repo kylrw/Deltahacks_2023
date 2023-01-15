@@ -3,7 +3,7 @@ import openai
 import AccessKeys
 
 #openai.organization = "org-UyKsO5lj2gVRNP6YefxZPkTs"
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("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")
 
 #prompt = input("Enter your promt: ")
 
