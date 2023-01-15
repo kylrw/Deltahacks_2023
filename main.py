@@ -4,6 +4,11 @@ import json
 import AccessKeys
 import requests
 from bs4 import BeautifulSoup
+from flask import Flask, request
+import jsonify
+
+
+app = Flask(__name__) #create new rest api
 
 def extract_article(url):
     response = requests.get(url)
@@ -184,9 +189,32 @@ def google_claims(claim_list):
             print(i["link"])
 
 
-if __name__ == "__main__":
+def send_email(text):
+	subject = "FakeBlock Report"  # create a string that is the subject
+	emailText = 'Subject: {}\n\n{}'.format(subject, text)  # set the subject of emailText to the subjec above
+
+	sender, password = 'grahamTestMaker@gmail.com', 'TestMakePassword1'  # t #the sender username then password MUST GMAIL ACCOUNT, dont hack me pls :)
+	recieve = "graham.morrison2003@gmail.com"  # define the reciever...
+	message = emailText  # the message
+	port = 465  # standard ssl port - router could block ssl port
+
+	context = ssl.create_default_context()
+	with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:  # access the gmail server
+		server.login(sender, password)  # login to gmail account
+		server.sendmail(sender, recieve, message)  # send mail
+
+@app.route("/fakeblock", methods=["POST"])
+def main():
+    info = request.json #request the json
+    url = info["url"]
     openai.api_key = os.getenv("OPENAI_API_KEY")
     #article = scrape_contents()
     article = ""
     claim_list = get_claims(article)
     google_claims(claim_list)
+    
+    send_email("Test")
+    return jsonify({'message':'Success!'})
+
+if __name__ == '__main__':
+    app.run()
