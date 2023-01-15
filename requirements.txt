@@ -1,5 +1,5 @@
 openai==0.23.1
-extractnet
 cython
 beautifulsoup4
+requests
 requests_html
